@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Therapeutic Inertia Clinical Assessment Tool</title>
+  <style>
+    :root {
+      --bg: #f4f7fa;
+      --card: #ffffff;
+      --text: #1a2a3a;
+      --muted: #5a7a8a;
+      --primary: #1e3a5f;
+      --primary-soft: #eaf2f8;
+      --green: #2d6a4f;
+      --green-soft: #e8f0ec;
+      --amber: #b8860b;
+      --amber-soft: #fff3cd;
+      --red: #b42318;
+      --border: #d0dce6;
+      --shadow: 0 2px 10px rgba(30,58,95,0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px 16px;
+    }
+
+    .tool-container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .header h1 {
+      color: var(--primary);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--primary);
+    }
+
+    .card.card-green { border-left-color: var(--green); }
+    .card.card-amber { border-left-color: var(--amber); }
+
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 14px;
+      color: var(--primary);
+    }
+
+    .card-green h3 { color: var(--green); }
+
+    .form-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.94rem;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--green);
+    }
+
+    .checkbox-group,
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .checkbox-pill,
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f4f8;
+      padding: 7px 14px;
+      border-radius: 24px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .checkbox-pill:hover,
+    .radio-pill:hover {
+      border-color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .checkbox-pill input,
+    .radio-pill input {
+      accent-color: var(--green);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .checkbox-pill.checked,
+    .radio-pill.selected {
+      background: var(--green-soft);
+      border-color: var(--green);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .hidden { display: none !important; }
+
+    .mode-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      background: #edf3f8;
+      padding: 6px;
+      gap: 6px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.2s ease;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-primary:hover { opacity: 0.96; }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--primary);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .error-msg {
+      color: var(--red);
+      font-size: 0.82rem;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+
+    .success-msg {
+      color: var(--green);
+      font-size: 0.82rem;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #edf2f7;
+      text-align: left;
+      vertical-align: top;
+      font-size: 0.86rem;
+    }
+
+    th {
+      background: #f8fafc;
+      color: var(--primary);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .badge-green { background: #d4edda; color: #155724; }
+    .badge-amber { background: #fff3cd; color: #856404; }
+    .badge-red { background: #f8d7da; color: #721c24; }
+    .badge-gray { background: #e2e3e5; color: #383d41; }
+
+    .btn-remove {
+      background: #fff5f5;
+      border: 1px solid #fecaca;
+      color: #b42318;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .btn-remove:hover { background: #fdeaea; }
+
+    .dashboard {
+      background: linear-gradient(180deg, #fbfdff, #f3f8fb);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 18px 10px;
+      margin: 18px 0;
+    }
+
+    .dashboard h3 {
+      color: var(--primary);
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .dash-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      min-height: 92px;
+    }
+
+    .dash-box .label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .dash-box .value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .dash-index {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .dash-index .label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .dash-index .formula {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .dash-index .value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1.2;
+    }
+
+    .interpretation {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+
+    .interpretation h3 {
+      color: var(--primary);
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .interpretation p {
+      color: var(--text);
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    .interpretation .placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .ada-note {
+      margin-top: 14px;
+      background: #fff7e6;
+      color: #7a4e00;
+      border: 1px solid #f3d29b;
+      border-left: 4px solid var(--amber);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .simple-terms {
+      margin-top: 18px;
+      background: #f2fbf7;
+      border: 1px solid #cfeae1;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .simple-terms h4 {
+      color: var(--green);
+      margin-bottom: 8px;
+      font-size: 0.96rem;
+    }
+
+    .simple-terms p {
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .simple-terms .placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin: 18px 0 8px;
+    }
+
+    .footer-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .empty-state {
+      color: var(--muted);
+      text-align: center;
+      padding: 22px 10px;
+      font-size: 0.92rem;
+    }
+
+    .other-text {
+      width: 100%;
+      margin-top: 8px;
+      display: none;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      font-size: 0.92rem;
+    }
+
+    .other-text:focus { border-color: var(--green); }
+
+    .quick-input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .sheet-status {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 14px 10px; }
+      .card { padding: 16px 14px; }
+      .actions { justify-content: stretch; }
+      .actions .btn { flex: 1 1 100%; }
+      .mode-toggle { width: 100%; }
+      .mode-btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="tool-container">
+    <div class="header">
+      <h1>Therapeutic Inertia Clinical Assessment Tool</h1>
+      <p>Track whether HbA1c outside target was followed by timely treatment adjustment.</p>
+    </div>
+
+    <div class="mode-toggle" aria-label="Mode switcher">
+      <button class="mode-btn active" id="btnDetailed" type="button">Detailed</button>
+      <button class="mode-btn" id="btnQuick" type="button">Quick</button>
+    </div>
+
+    <div class="card card-blue">
+      <h3>Patient information</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="patId">Patient ID</label>
+          <input id="patId" type="text" placeholder="e.g. P-1042" />
+        </div>
+        <div class="form-group">
+          <label for="patName">Patient name</label>
+          <input id="patName" type="text" placeholder="Optional" />
+        </div>
+      </div>
+    </div>
+
+    <div id="quickModeSection" class="hidden">
+      <div class="card card-green">
+        <h3>Quick mode</h3>
+        <div class="quick-input-row">
+          <div class="form-group">
+            <label for="qTotal">Total attended visits</label>
+            <input id="qTotal" type="number" min="0" step="1" value="0" />
+          </div>
+          <div class="form-group">
+            <label for="qSub">Visits outside individualized target</label>
+            <input id="qSub" type="number" min="0" step="1" value="0" />
+          </div>
+          <div class="form-group">
+            <label for="qSubInt">Visits outside target with intervention</label>
+            <input id="qSubInt" type="number" min="0" step="1" value="0" />
+          </div>
+        </div>
+        <div id="quickError" class="error-msg"></div>
+      </div>
+    </div>
+
+    <div id="detailedModeSection">
+      <div class="card card-blue">
+        <h3>Add a visit</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="vDate">Visit date</label>
+            <input id="vDate" type="date" />
+          </div>
+          <div class="form-group">
+            <label for="vHb">HbA1c (%)</label>
+            <input id="vHb" type="number" min="3" max="20" step="0.1" placeholder="e.g. 8.4" />
+          </div>
+          <div class="form-group">
+            <label for="targetHb">Individualized target (%)</label>
+            <input id="targetHb" type="number" min="4" max="12" step="0.1" placeholder="Optional: 7.0" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Missed appointment?</label>
+            <label class="checkbox-pill" for="missedAppt">
+              <input id="missedAppt" type="checkbox" />
+              <span>Yes, missed visit</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Hypoglycemia assessment</label>
+          <div id="hypoGroup" class="radio-group">
+            <label class="radio-pill"><input type="radio" name="hypo" value="reported" /> <span>Reported</span></label>
+            <label class="radio-pill"><input type="radio" name="hypo" value="documented" /> <span>Documented</span></label>
+            <label class="radio-pill"><input type="radio" name="hypo" value="not_reported" /> <span>Not reported</span></label>
+            <label class="radio-pill"><input type="radio" name="hypo" value="not_assessed" /> <span>Not assessed</span></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Interventions documented</label>
+          <div id="intervGroup" class="checkbox-group">
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="increasing_dose" /> <span>Increasing dose</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="initiation_medication" /> <span>Initiation of medication</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="reducing_dose" /> <span>Reducing dose</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="removing_medication" /> <span>Removing a medication</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="referral_specialist" /> <span>Referral to specialist</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="prescribed_cgm" /> <span>Prescribed CGM</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="referral_dietitian" /> <span>Referral to dietitian</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="hypoglycemia_management" /> <span>Hypoglycemia management</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="follow_up_monitor" /> <span>Follow up to monitor</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="nephropathy_screening" /> <span>Routine nephropathy screening</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="ophthalmology_screening" /> <span>Routine ophthalmology screening</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="podiatry_screening" /> <span>Routine podiatry screening</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="immunization" /> <span>Immunization</span></label>
+            <label class="checkbox-pill"><input class="interv" type="checkbox" value="other_intervention" /> <span>Other</span></label>
+          </div>
+          <textarea id="otherIntervText" class="other-text" placeholder="Describe other intervention"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Reasons documented</label>
+          <div id="reasonGroup" class="checkbox-group">
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="scheduling_issues" /> <span>Scheduling issues</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="hypoglycemia" /> <span>Hypoglycemia</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="less_stringent" /> <span>Less stringent management</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="prescriber_no_order" /> <span>Prescriber did not input order</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="patient_refused" /> <span>Patient declined</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="comorbidities" /> <span>Comorbidities / acute illness</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="patient_opted_diet" /> <span>Patient opted for diet and exercise</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="social_determinants" /> <span>Social determinants</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="diabetes_distress" /> <span>Diabetes distress</span></label>
+            <label class="checkbox-pill"><input class="reason" type="checkbox" value="other_reason" /> <span>Other</span></label>
+          </div>
+          <textarea id="otherReasonText" class="other-text" placeholder="Describe other reason"></textarea>
+        </div>
+
+        <div class="actions" style="justify-content: flex-start;">
+          <button class="btn btn-primary" id="addVisitBtn" type="button">Add visit</button>
+        </div>
+        <div id="addError" class="error-msg"></div>
+      </div>
+
+      <div class="card card-green">
+        <h3>Recorded visits</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>HbA1c</th>
+                <th>Target</th>
+                <th>Outside target</th>
+                <th>Intervention</th>
+                <th>Reason</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="visitTable"></tbody>
+          </table>
+        </div>
+        <div id="noVisits" class="empty-state">No visits added yet.</div>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <h3>Therapeutic inertia dashboard</h3>
+      <div class="dash-grid">
+        <div class="dash-box">
+          <span class="label">Total attended visits</span>
+          <span class="value" id="rTotal">0</span>
+        </div>
+        <div class="dash-box">
+          <span class="label">Outside target</span>
+          <span class="value" id="rSub">0</span>
+        </div>
+        <div class="dash-box">
+          <span class="label">Outside target + intervention</span>
+          <span class="value" id="rSubInt">0</span>
+        </div>
+        <div class="dash-index">
+          <span class="label">SBM index</span>
+          <span class="formula">(Outside target − intervention) / total</span>
+          <span class="value" id="rSBM">—</span>
+        </div>
+        <div class="dash-index">
+          <span class="label">ADA index</span>
+          <span class="formula">1 − (intervention / outside target)</span>
+          <span class="value" id="rADA">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="interpretation" id="interpBox">
+      <h3>Clinical interpretation</h3>
+      <p id="interpText">Add visits to generate a clinical interpretation.</p>
+      <div class="simple-terms">
+        <h4>Plain language</h4>
+        <p id="simpleTermsText">The calculator will summarize the result in plain language once data is entered.</p>
+      </div>
+      <div id="adaNoteBox" class="ada-note hidden">
+        The ADA method cannot be calculated when there are no visits with HbA1c outside the individualized target (dividing by zero is mathematically undefined), so it is not reported here. The SBM index remains valid in this situation.
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="exportBtn" type="button">Export CSV &amp; Save</button>
+      <button class="btn btn-outline" id="clearBtn" type="button">Clear all</button>
+    </div>
+    <div id="sheetStatus" class="sheet-status" aria-live="polite"></div>
+
+    <div class="footer-note">
+      Note: This calculator is designed for clinical review and quality improvement use. It should not replace local clinical judgment or institutional policy.
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "";
+    let visits = [];
+    let currentMode = 'detailed';
+
+    const INTERV_LABELS = {
+      increasing_dose: 'Increasing dose',
+      initiation_medication: 'Initiation of medication',
+      reducing_dose: 'Reducing dose',
+      removing_medication: 'Removing a medication',
+      referral_specialist: 'Referral to specialist',
+      prescribed_cgm: 'Prescribed CGM',
+      referral_dietitian: 'Referral to dietitian',
+      hypoglycemia_management: 'Hypoglycemia management',
+      follow_up_monitor: 'Follow up to monitor',
+      nephropathy_screening: 'Routine nephropathy screening',
+      ophthalmology_screening: 'Routine ophthalmology screening',
+      podiatry_screening: 'Routine podiatry screening',
+      immunization: 'Immunization',
+      other_intervention: 'Other'
+    };
+
+    const REASON_LABELS = {
+      scheduling_issues: 'Scheduling issues',
+      hypoglycemia: 'Hypoglycemia',
+      less_stringent: 'Less stringent diabetes management',
+      prescriber_no_order: 'Prescriber did not input order',
+      patient_refused: 'Patient declined',
+      comorbidities: 'Comorbidities / acute illness priority',
+      patient_opted_diet: 'Patient opted for diet and exercise',
+      social_determinants: 'Social determinants',
+      diabetes_distress: 'Diabetes distress',
+      other_reason: 'Other'
+    };
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('btnDetailed').classList.toggle('active', mode === 'detailed');
+      document.getElementById('btnQuick').classList.toggle('active', mode === 'quick');
+      document.getElementById('detailedModeSection').classList.toggle('hidden', mode !== 'detailed');
+      document.getElementById('quickModeSection').classList.toggle('hidden', mode !== 'quick');
+      render();
+    }
+
+    function isOutsideTarget(visit) {
+      if (visit.missed) return false;
+      if (visit.hypoglycemia === 'reported' || visit.hypoglycemia === 'documented') return true;
+
+      const target = visit.target;
+      const hba1c = visit.hba1c;
+
+      if (target === null || target === undefined || Number.isNaN(target)) {
+        return hba1c > 7.0 || hba1c < 6.5;
+      }
+
+      return hba1c > target;
+    }
+
+    function formatDateDMY(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr + 'T00:00:00');
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    function resetPills() {
+      document.querySelectorAll('.checkbox-pill').forEach(item => item.classList.remove('checked'));
+      document.querySelectorAll('.radio-pill').forEach(item => item.classList.remove('selected'));
+    }
+
+    function addVisit() {
+      const dateEl = document.getElementById('vDate');
+      const hbEl = document.getElementById('vHb');
+      const targetEl = document.getElementById('targetHb');
+      const errEl = document.getElementById('addError');
+
+      const date = dateEl.value;
+      const hba1c = parseFloat(hbEl.value);
+      const targetVal = targetEl.value.trim();
+      const target = targetVal === '' ? null : parseFloat(targetVal);
+      const missed = document.getElementById('missedAppt').checked;
+
+      if (!date) {
+        errEl.textContent = 'Please enter a visit date.';
+        return;
+      }
+
+      if (Number.isNaN(hba1c) || hba1c < 3 || hba1c > 20) {
+        errEl.textContent = 'HbA1c must be between 3 and 20%.';
+        return;
+      }
+
+      const hypoRadio = document.querySelector('input[name="hypo"]:checked');
+      const hypoglycemia = hypoRadio ? hypoRadio.value : 'not_assessed';
+
+      const interventions = Array.from(document.querySelectorAll('.interv:checked')).map(cb => cb.value);
+      const interventionOther = document.getElementById('otherIntervText').value.trim();
+      const reasons = Array.from(document.querySelectorAll('.reason:checked')).map(cb => cb.value);
+      const reasonOther = document.getElementById('otherReasonText').value.trim();
+
+      visits.push({
+        id: Date.now() + Math.random(),
+        date,
+        hba1c,
+        target,
+        missed,
+        hypoglycemia,
+        interventions,
+        interventionOther,
+        reasons,
+        reasonOther,
+        hasIntervention: interventions.length > 0 || !!interventionOther
+      });
+
+      dateEl.valueAsDate = new Date();
+      hbEl.value = '';
+      targetEl.value = '';
+      document.getElementById('missedAppt').checked = false;
+      document.querySelectorAll('input[name="hypo"]').forEach(rb => rb.checked = false);
+      document.querySelectorAll('.interv').forEach(cb => { cb.checked = false; cb.closest('.checkbox-pill').classList.remove('checked'); });
+      document.querySelectorAll('.reason').forEach(cb => { cb.checked = false; cb.closest('.checkbox-pill').classList.remove('checked'); });
+      document.getElementById('otherIntervText').value = '';
+      document.getElementById('otherReasonText').value = '';
+      document.getElementById('otherIntervText').style.display = 'none';
+      document.getElementById('otherReasonText').style.display = 'none';
+      errEl.textContent = '';
+
+      render();
+    }
+
+    function removeVisit(id) {
+      visits = visits.filter(v => v.id !== id);
+      render();
+    }
+
+    function updateDashboard(total, outsideTarget, outsideWithIntv) {
+      document.getElementById('rTotal').textContent = total;
+      document.getElementById('rSub').textContent = outsideTarget;
+      document.getElementById('rSubInt').textContent = outsideWithIntv;
+
+      const sbm = total > 0 ? ((outsideTarget - outsideWithIntv) / total) * 100 : null;
+      const ada = outsideTarget > 0 ? (1 - (outsideWithIntv / outsideTarget)) * 100 : null;
+
+      document.getElementById('rSBM').textContent = sbm !== null ? `${sbm.toFixed(1)}%` : '—';
+      document.getElementById('rADA').textContent = ada !== null ? `${ada.toFixed(1)}%` : '—';
+    }
+
+    function renderDetailed() {
+      const tbody = document.getElementById('visitTable');
+      const noVisits = document.getElementById('noVisits');
+
+      if (visits.length === 0) {
+        tbody.innerHTML = '';
+        noVisits.classList.remove('hidden');
+      } else {
+        noVisits.classList.add('hidden');
+        const sorted = [...visits].sort((a, b) => new Date(b.date) - new Date(a.date));
+        tbody.innerHTML = sorted.map(v => {
+          const outside = isOutsideTarget(v) ? 'Yes' : 'No';
+          const interventionText = v.hasIntervention ? (v.interventions.length ? v.interventions.map(k => INTERV_LABELS[k] || k).join(', ') : (v.interventionOther || 'Intervention recorded')) : '—';
+          const reasonsText = v.reasons.length ? v.reasons.map(k => REASON_LABELS[k] || k).join(', ') : (v.reasonOther ? v.reasonOther : '—');
+          return `
+            <tr>
+              <td>${formatDateDMY(v.date)}</td>
+              <td>${Number(v.hba1c).toFixed(1)}%</td>
+              <td>${v.target !== null && v.target !== undefined ? `${Number(v.target).toFixed(1)}%` : 'Not set'}</td>
+              <td><span class="badge ${outside === 'Yes' ? 'badge-amber' : 'badge-green'}">${outside}</span></td>
+              <td>${interventionText}</td>
+              <td>${reasonsText}</td>
+              <td><button class="btn-remove" data-id="${v.id}" type="button">Remove</button></td>
+            </tr>
+          `;
+        }).join('');
+
+        tbody.querySelectorAll('.btn-remove').forEach(btn => btn.addEventListener('click', () => removeVisit(Number(btn.dataset.id))));
+      }
+
+      const attended = visits.filter(v => !v.missed);
+      const total = attended.length;
+      const outsideTarget = attended.filter(v => isOutsideTarget(v)).length;
+      const outsideWithIntv = attended.filter(v => isOutsideTarget(v) && v.hasIntervention).length;
+
+      updateDashboard(total, outsideTarget, outsideWithIntv);
+      renderDetailedInterp(attended, total, outsideTarget, outsideWithIntv);
+    }
+
+    function renderQuick() {
+      const qTotal = parseInt(document.getElementById('qTotal').value) || 0;
+      const qSub = parseInt(document.getElementById('qSub').value) || 0;
+      const qSubInt = parseInt(document.getElementById('qSubInt').value) || 0;
+      const errEl = document.getElementById('quickError');
+
+      if (qSubInt > qSub) {
+        errEl.textContent = 'Visits outside target with an intervention cannot exceed total visits outside target.';
+      } else if (qSub > qTotal) {
+        errEl.textContent = 'Visits outside target cannot exceed total visits.';
+      } else {
+        errEl.textContent = '';
+      }
+
+      updateDashboard(qTotal, qSub, qSubInt);
+      renderQuickInterp(qTotal, qSub, qSubInt);
+    }
+
+    function renderDetailedInterp(attended, total, outsideTarget, outsideWithIntv) {
+      const interpText = document.getElementById('interpText');
+      const simpleText = document.getElementById('simpleTermsText');
+      const adaNote = document.getElementById('adaNoteBox');
+
+      if (visits.length === 0) {
+        interpText.textContent = 'Add visits to generate a clinical interpretation.';
+        simpleText.textContent = 'The calculator will summarize the result in plain language once data is entered.';
+        adaNote.classList.add('hidden');
+        return;
+      }
+
+      if (attended.length === 0) {
+        interpText.textContent = 'All visits were missed appointments, so no attended visit data is available for analysis.';
+        simpleText.textContent = 'No attended visits were recorded, so there is not enough information to calculate a therapeutic inertia score.';
+        adaNote.classList.add('hidden');
+        return;
+      }
+
+      const recent = [...attended].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+      const recentHb = recent.hba1c.toFixed(1);
+      const recentDate = formatDateDMY(recent.date);
+      const targetStr = recent.target !== null && recent.target !== undefined ? `${recent.target.toFixed(1)}%` : '6.5–7.0%';
+      const targetComparison = recent.target !== null && recent.target !== undefined ? (recent.hba1c > recent.target ? 'above' : 'at or below') : (recent.hba1c > 7.0 ? 'above' : 'within');
+      const sbm = total > 0 ? (((outsideTarget - outsideWithIntv) / total) * 100).toFixed(1) : '0.0';
+
+      let hypoSentence = '';
+      if (recent.hypoglycemia === 'reported' || recent.hypoglycemia === 'documented') {
+        hypoSentence = ' Hypoglycemia was reported or documented on the most recent visit.';
+      }
+
+      const interventionSummary = recent.hasIntervention
+        ? recent.interventions.length ? recent.interventions.map(v => INTERV_LABELS[v] || v).join(', ') : (recent.interventionOther || 'an intervention')
+        : 'no intervention';
+
+      const reasonSummary = recent.reasons.length ? recent.reasons.map(v => REASON_LABELS[v] || v).join(', ') : (recent.reasonOther || 'no reasons recorded');
+
+      interpText.textContent = `The patient's most recent HbA1c is ${recentHb}% (recorded on ${recentDate}), which is ${targetComparison} their individualized target of ${targetStr}.${hypoSentence} Based on ${total} attended visits, the therapeutic inertia index is ${sbm}% (SBM). This indicates that at ${sbm}% of visits, treatment was not adjusted in a timely manner even though the HbA1c was outside the individualized target. On the most recent visit, the documented response included ${interventionSummary}. Possible reasons recorded include ${reasonSummary}.`;
+
+      adaNote.classList.toggle('hidden', outsideTarget !== 0);
+
+      if (total > 0 && outsideTarget === 0) {
+        simpleText.textContent = `In plain language: over the ${total} visit(s) entered, the person's HbA1c stayed within goal, so there were no missed opportunities to adjust treatment. The score is 0%, which is a positive finding.`;
+      } else if (total > 0) {
+        const missed = outsideTarget - outsideWithIntv;
+        simpleText.textContent = `In plain language: out of ${total} visit(s), the HbA1c was outside the agreed target at ${outsideTarget} visit(s). Treatment was adjusted at ${outsideWithIntv} of those visit(s), leaving ${missed} missed opportunity(ies) to act. The ${sbm}% score means treatment was not changed promptly enough when it should have been.`;
+      } else {
+        simpleText.textContent = 'No attended data is available yet.';
+      }
+    }
+
+    function renderQuickInterp(total, outsideTarget, outsideWithIntv) {
+      const interpText = document.getElementById('interpText');
+      const simpleText = document.getElementById('simpleTermsText');
+      const adaNote = document.getElementById('adaNoteBox');
+
+      if (total === 0 && outsideTarget === 0 && outsideWithIntv === 0) {
+        interpText.textContent = 'Enter values to generate an interpretation.';
+        simpleText.textContent = 'No data has been entered yet.';
+        adaNote.classList.add('hidden');
+        return;
+      }
+
+      const sbm = total > 0 ? (((outsideTarget - outsideWithIntv) / total) * 100).toFixed(1) : '0.0';
+      const ada = outsideTarget > 0 ? ((1 - (outsideWithIntv / outsideTarget)) * 100).toFixed(1) : null;
+      const adaClause = ada !== null ? `; the ADA score is ${ada}%` : '';
+
+      interpText.textContent = `Based on ${total} total attended visits, of which ${outsideTarget} had an HbA1c outside the individualized target and ${outsideWithIntv} received an intervention, the therapeutic inertia index is ${sbm}% (SBM${adaClause}). This indicates that at ${sbm}% of visits, treatment was not adjusted in a timely manner even though the HbA1c was outside the individualized target. Quick mode uses aggregate data; per-visit details are not available.`;
+
+      adaNote.classList.toggle('hidden', !(outsideTarget === 0 && outsideWithIntv === 0));
+
+      if (total > 0 && outsideTarget === 0) {
+        simpleText.textContent = `In plain language: across the ${total} visit(s), blood sugar stayed within the agreed goal every time, so there were no missed opportunities to adjust treatment. The therapeutic inertia index is 0%, which is a positive finding.`;
+      } else if (total > 0) {
+        const missed = outsideTarget - outsideWithIntv;
+        simpleText.textContent = `In plain language: out of ${total} visit(s), the person's HbA1c was outside the goal at ${outsideTarget} visit(s). Treatment was changed at ${outsideWithIntv} of those visit(s), so there were ${missed} missed opportunity(ies) to act. The ${sbm}% score means that, overall, treatment was not adjusted promptly when it should have been.`;
+      } else {
+        simpleText.textContent = 'No attended data is available yet.';
+      }
+    }
+
+    function render() {
+      if (currentMode === 'quick') {
+        renderQuick();
+      } else {
+        renderDetailed();
+      }
+    }
+
+    function resolveSheetStatus(message, type = 'info') {
+      const statusEl = document.getElementById('sheetStatus');
+      statusEl.textContent = message;
+      statusEl.style.color = type === 'success' ? '#1e7a4d' : type === 'error' ? '#b42318' : '#5a7a8a';
+    }
+
+    function exportCSV() {
+      const pid = document.getElementById('patId').value.trim() || 'Unknown';
+      const patientName = document.getElementById('patName').value.trim();
+      const statusEl = document.getElementById('sheetStatus');
+
+      let csv = '';
+      let filename = '';
+      let sheetRows = [];
+
+      if (currentMode === 'quick') {
+        const total = parseInt(document.getElementById('qTotal').value) || 0;
+        const outsideTarget = parseInt(document.getElementById('qSub').value) || 0;
+        const outsideWithIntv = parseInt(document.getElementById('qSubInt').value) || 0;
+        const dateStamp = new Date().toISOString().slice(0, 10);
+        filename = `therapeutic_inertia_quick_${pid}_${dateStamp}.csv`;
+        csv = 'Patient ID,Patient Name,Mode,Date,Total Attended Visits,Outside Target,Outside Target With Intervention\n';
+        csv += `${pid},${patientName || ''},quick,${dateStamp},${total},${outsideTarget},${outsideWithIntv}\n`;
+        sheetRows = [{
+          patient_id: pid,
+          patient_name: patientName,
+          mode: 'quick',
+          date: dateStamp,
+          total_attended_visits: total,
+          outside_target: outsideTarget,
+          outside_target_with_intervention: outsideWithIntv
+        }];
+      } else {
+        const dateStamp = new Date().toISOString().slice(0, 10);
+        filename = `therapeutic_inertia_detailed_${pid}_${dateStamp}.csv`;
+        csv = 'Patient ID,Patient Name,Mode,Date,Visit Date,HbA1c,Target,Missed,Hypoglycemia,Interventions,Intervention Other,Reasons,Reason Other\n';
+        visits.forEach(v => {
+          const row = [
+            pid,
+            patientName || '',
+            'detailed',
+            dateStamp,
+            v.date,
+            v.hba1c,
+            v.target !== null && v.target !== undefined ? v.target : '',
+            v.missed ? 'Yes' : 'No',
+            v.hypoglycemia,
+            (v.interventions || []).join('; '),
+            v.interventionOther || '',
+            (v.reasons || []).join('; '),
+            v.reasonOther || ''
+          ];
+          csv += row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(',') + '\n';
+          sheetRows.push({
+            patient_id: pid,
+            patient_name: patientName,
+            mode: 'detailed',
+            date: dateStamp,
+            visit_date: v.date,
+            hba1c: v.hba1c,
+            target: v.target,
+            missed: v.missed ? 'Yes' : 'No',
+            hypoglycemia: v.hypoglycemia,
+            interventions: (v.interventions || []).join('; '),
+            intervention_other: v.interventionOther || '',
+            reasons: (v.reasons || []).join('; '),
+            reason_other: v.reasonOther || ''
+          });
+        });
+      }
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.trim() !== '') {
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rows: sheetRows })
+        }).then(() => {
+          resolveSheetStatus('CSV downloaded and save-to-sheet request sent.', 'success');
+        }).catch(() => {
+          resolveSheetStatus('CSV downloaded locally. Google Sheets save was skipped.', 'info');
+        });
+      } else {
+        resolveSheetStatus('CSV downloaded locally. Google Sheets save is not configured.', 'info');
+      }
+    }
+
+    function clearAll() {
+      const confirmClear = currentMode === 'quick'
+        ? confirm('Clear the quick-mode values?')
+        : !visits.length || confirm('Are you sure you want to clear all visits?');
+
+      if (!confirmClear) return;
+
+      if (currentMode === 'quick') {
+        document.getElementById('qTotal').value = 0;
+        document.getElementById('qSub').value = 0;
+        document.getElementById('qSubInt').value = 0;
+        document.getElementById('quickError').textContent = '';
+      } else {
+        visits = [];
+      }
+
+      render();
+      resolveSheetStatus('', 'info');
+    }
+
+    document.getElementById('btnDetailed').addEventListener('click', () => setMode('detailed'));
+    document.getElementById('btnQuick').addEventListener('click', () => setMode('quick'));
+    document.getElementById('addVisitBtn').addEventListener('click', addVisit);
+    document.getElementById('exportBtn').addEventListener('click', exportCSV);
+    document.getElementById('clearBtn').addEventListener('click', clearAll);
+
+    document.querySelectorAll('.interv').forEach(cb => {
+      cb.addEventListener('change', function() {
+        const pill = this.closest('.checkbox-pill');
+        if (this.checked) {
+          pill.classList.add('checked');
+        } else {
+          pill.classList.remove('checked');
+        }
+
+        const otherBox = document.getElementById('otherIntervText');
+        if (this.value === 'other_intervention' && this.checked) {
+          otherBox.style.display = 'block';
+        } else if (this.value === 'other_intervention' && !this.checked) {
+          otherBox.style.display = 'none';
+          otherBox.value = '';
+        }
+      });
+    });
+
+    document.querySelectorAll('.reason').forEach(cb => {
+      cb.addEventListener('change', function() {
+        const pill = this.closest('.checkbox-pill');
+        if (this.checked) {
+          pill.classList.add('checked');
+        } else {
+          pill.classList.remove('checked');
+        }
+
+        const otherBox = document.getElementById('otherReasonText');
+        if (this.value === 'other_reason' && this.checked) {
+          otherBox.style.display = 'block';
+        } else if (this.value === 'other_reason' && !this.checked) {
+          otherBox.style.display = 'none';
+          otherBox.value = '';
+        }
+      });
+    });
+
+    document.querySelectorAll('input[name="hypo"]').forEach(rb => {
+      rb.addEventListener('change', function() {
+        const pill = this.closest('.radio-pill');
+        document.querySelectorAll('#hypoGroup .radio-pill').forEach(p => p.classList.remove('selected'));
+        if (this.checked) {
+          pill.classList.add('selected');
+        }
+      });
+    });
+
+    document.getElementById('missedAppt').addEventListener('change', function() {
+      const pill = this.closest('.checkbox-pill');
+      pill.classList.toggle('checked', this.checked);
+    });
+
+    ['qTotal', 'qSub', 'qSubInt'].forEach(id => {
+      const field = document.getElementById(id);
+      field.addEventListener('input', () => {
+        if (currentMode === 'quick') {
+          renderQuick();
+        }
+      });
+    });
+
+    document.getElementById('vDate').valueAsDate = new Date();
+    render();
+  </script>
+</body>
+</html>

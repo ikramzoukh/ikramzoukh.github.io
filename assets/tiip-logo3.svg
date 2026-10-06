@@ -1,0 +1,25 @@
+<svg width="1200" height="520" viewBox="0 0 1200 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Therapeutic Inertia Intervention Program</title>
+  <desc id="desc">TIIP logo with circular arcs and a stylized patient figure.</desc>
+  <rect width="1200" height="520" fill="#040707"/>
+
+  <path d="M68 330C88 193 186 83 330 47C432 20 605 30 760 96C900 156 1020 251 1064 330" stroke="#2BBE63" stroke-width="38" stroke-linecap="round"/>
+  <path d="M150 380C216 223 317 142 430 123C561 101 763 120 873 182C955 228 1010 292 1045 380" stroke="#0D4F86" stroke-width="34" stroke-linecap="round"/>
+
+  <g transform="translate(120, 120)">
+    <path d="M128 74C142 90 150 112 151 129C152 148 146 164 136 184C125 204 117 224 116 244C115 259 119 274 130 286C145 302 164 308 181 305C196 303 208 295 216 282C229 259 228 230 214 196C202 165 182 143 151 117L128 74Z" fill="#23B161" fill-opacity="0.92"/>
+    <path d="M174 40C185 47 194 59 200 73C208 90 212 110 210 130C208 150 200 166 185 181C171 196 152 205 132 207C117 208 101 203 88 191C74 178 66 161 63 140C60 119 65 100 79 85C94 69 115 57 138 52C152 49 165 45 174 40Z" fill="#23B161" fill-opacity="0.92"/>
+    <path d="M88 184C123 162 160 152 206 159C231 163 260 175 273 205C286 236 283 270 263 300C241 332 205 351 162 354C122 357 85 344 56 316C26 287 17 246 28 209C38 184 58 170 88 184Z" fill="#31C56E"/>
+    <path d="M80 180C91 170 103 162 116 156C137 147 160 144 180 151C210 162 227 191 233 221C240 254 234 286 216 311C200 333 173 344 139 344C107 344 80 334 60 312C38 288 28 256 34 220C40 201 55 190 80 180Z" fill="#7ADD5B" fill-opacity="0.8"/>
+    <path d="M140 123L119 181H169L140 123Z" fill="#31C56E"/>
+    <path d="M67 207C84 185 101 170 117 164C140 155 166 160 187 173C204 184 223 204 234 232C246 261 249 290 239 319C229 346 204 367 171 376C146 383 117 382 88 370C58 357 32 333 23 299C13 264 17 235 29 219C41 203 57 200 67 207Z" fill="#6AE88D" fill-opacity="0.42"/>
+  </g>
+
+  <g>
+    <text x="390" y="280" fill="#0B386C" font-family="Segoe UI, Arial, sans-serif" font-weight="900" font-size="248" letter-spacing="-14">TIIP</text>
+    <text x="385" y="370" fill="#0B386C" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle" letter-spacing="0.5">Therapeutic Inertia Intervention Program</text>
+    <path d="M382 395H900" stroke="#2BBE63" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="920" cy="395" r="10" fill="#2BBE63"/>
+    <text x="600" y="450" fill="#2BBE63" font-family="Segoe UI, Arial, sans-serif" font-style="italic" font-weight="700" font-size="54" text-anchor="middle">Stay ahead of Diabetes</text>
+  </g>
+</svg>
